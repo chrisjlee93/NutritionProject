@@ -5,6 +5,9 @@ import {CircularProgress} from "@mui/material";
 import Box from "@mui/material/Box";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import IconButton from "@mui/material/IconButton";
+import MacroTable from "./MacroTable.jsx";
+import * as React from "react";
+import YoutubeVideo from "./YoutubeVideos.jsx";
 
 
 
@@ -98,16 +101,39 @@ const Info = () => {
                 }
             );
             console.log(response);
-            setMacros(response.data.foods)
+
+            const foods = response.data.foods;
+            setMacros(foods);
+            setTableVisibility(!!foods?.length); // true if foods is not empty
+
         } catch (error) {
             console.error('Error fetching nutrition:', error);
+            setTableVisibility(false); // fallback if it fails
         }
+        setMacros(response.data.foods)
     };
 
     const test = () => {
         console.log(macros)
+        handleVisibility()
     }
 
+    const handleVisibility = () => {
+        return (macros) ? setTableVisibility(true) : setTableVisibility(false)
+    }
+
+    const extractYouTubeID = (url) => {
+        if (!url) return null;
+
+        const regex =
+            /(?:youtube\.com\/(?:[^/]+\/.+\/|(?:v|embed|shorts|watch)\/|.*[?&]v=)|youtu\.be\/)([^"&?/ ]{11})/;
+
+        const match = url.match(regex);
+        return match && match[1] ? match[1] : null;
+    };
+
+    const videoId = extractYouTubeID(mealInfo.strYoutube);
+    const embedUrl = videoId ? `https://www.youtube.com/embed/${videoId}` : null;
 
 
     return (
@@ -126,7 +152,8 @@ const Info = () => {
             <p><strong>Category:</strong> {mealInfo.strCategory}</p>
             <p><strong>Area:</strong> {mealInfo.strArea}</p>
             <p><strong>Instructions:</strong> {mealInfo.strInstructions}</p>
-            <Box>
+            <Box sx={{ display: 'flex', flexWrap: 'wrap'}}>
+            <Box sx={{ flex: 1, minWidth: '300px' }}>
                 <h2>Ingredients:</h2>
                 <ul>
                     {ingredients.map((item, index) => (
@@ -137,12 +164,20 @@ const Info = () => {
                 </ul>
                 {/*Setting up a button to do an API call on the ingredients on the list*/}
                 {/*Will only be using the first ingredient in the array to save on API calls*/}
-                <button onClick={() => fetchMacros(`${ingredients[0].measure} ${ingredients[0].ingredient}`)}>Get Macros (WIP)</button>
-                <button onClick={test}>Test</button>
             </Box>
+                {tableVisibility && (
+            <Box sx={{ flex: 1, minWidth: '300px' }}>
+                <h2>Macros</h2>
+                <MacroTable Macros={macros[0]}/>
+            </Box>
+                )}
+            </Box>
+            <button onClick={() => fetchMacros(`${ingredients[0].measure} ${ingredients[0].ingredient}`)}>Get Macros (WIP)</button>
+            <button onClick={test}>Test</button>
             {mealInfo.strYoutube && (
                 <div style={{ marginTop: '1rem' }}>
-                    <a href={mealInfo.strYoutube} target="_blank" rel="noopener noreferrer">Watch Tutorial</a>
+                    {/*<a href={mealInfo.strYoutube} target="_blank" rel="noopener noreferrer">Watch Tutorial</a>*/}
+                    <YoutubeVideo mealInfo={mealInfo}/>
                 </div>
             )}
         </Box>
