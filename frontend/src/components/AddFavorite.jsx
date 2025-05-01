@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import Box from "@mui/material/Box";
 import {
     FormControl,
@@ -12,16 +12,24 @@ import {
 } from "@mui/material";
 import Radio from '@mui/material/Radio';
 import StarIcon from '@mui/icons-material/Star';
+import {useParams} from "react-router-dom";
+import axios from "axios";
 
 const addFavorite = ({meal}) => {
+    const { id } = useParams(); // 🛠 Grab meal ID from URL
 
     const initalForm = {
         category: '',
-        size: 1,
         value: 3,
         // comments: ''
     }
 
+    // Use State Area
+    const [form, setForm] = useState(initalForm)
+    const {category, value} = form
+    const [hover, setHover] = useState(-1);
+
+    // Rating settings
     const labels = {
         0.5: '💩 Why are you even adding this?',
         1: '💩 Why are you even adding this?',
@@ -39,20 +47,39 @@ const addFavorite = ({meal}) => {
         return `${value} Star${value !== 1 ? 's' : ''}, ${labels[value]}`;
     }
 
-    // Use State Area
-    const [form, setForm] = useState(initalForm)
-    const {category, size, value} = form
-    // const [value, setValue] = useState(2);
-    const [hover, setHover] = useState(-1);
 
-        const handleChange = (e) => {
-            setForm({...form,[e.target.value]:e.target.value});
-            console.log(form)
-        };
+    const handleChange = (e) => {
+        setForm({...form,[e.target.value]:e.target.value});
+        console.log(form)
+    };
+
 
     const handleSubmit = (e) => {
         e.preventDefault()
     }
+
+    // Call and load from API based on ID
+    useEffect(() => {
+        const fetchMealInfo = async () => {
+            try {
+                const response = await axios.get('https://www.themealdb.com/api/json/v1/1/lookup.php', {
+                    params: { i: id }
+                });
+                if (response.data.meals && response.data.meals.length > 0) {
+                    setMealInfo(response.data.meals[0]); // first meal result
+                } else {
+                    setError('No meal found');
+                }
+            } catch (err) {
+                console.error('Failed to fetch meal:', err);
+                setError('Failed to fetch meal');
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchMealInfo();
+    }, [id]); // dependency array: refetch if id changes
+
 
     return (
         <>
@@ -65,12 +92,8 @@ const addFavorite = ({meal}) => {
                 noValidate
                 autoComplete="off"
             >
-                {/*<TextField id="outlined-basic" label="" variant="outlined" />*/}
-                {/*<TextField id="filled-basic" label="Filled" variant="filled" />*/}
-                {/*<TextField id="standard-basic" label="Standard" variant="standard" />*/}
-                {/*<TextField id="outlined-basic" label="Outlined" variant="outlined" />*/}
 
-
+                {/*Meal Type Category Selection*/}
                 <FormControl>
                     <FormLabel id="catergory-radio">Category</FormLabel>
                     <RadioGroup
@@ -87,26 +110,11 @@ const addFavorite = ({meal}) => {
                     </RadioGroup>
                 </FormControl>
 
-                <FormControl fullWidth>
-                    <InputLabel id="servings-label">Serving Size</InputLabel>
-                    <Select
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        value={size}
-                        label="Size"
-                        onChange={handleChange}
-                    >
-                        <MenuItem value={0.25}>0.25</MenuItem>
-                        <MenuItem value={0.5}>0.5</MenuItem>
-                        <MenuItem value={1}>1</MenuItem>
-                        <MenuItem value={2}>2</MenuItem>
-                    </Select>
-                </FormControl>
-
                 <Box>
                     <TextField fullWidth id="comments" multiline rows={5} label="Comments" variant="outlined" />
                 </Box>
 
+                {/*MUI Rating Element*/}
                 <Box sx={{ width: 650, display: 'flex', alignItems: 'center' }}>
                     <Rating
                         name="hover-feedback"
