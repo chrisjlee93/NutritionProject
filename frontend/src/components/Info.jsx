@@ -48,7 +48,7 @@ const Info = () => {
             }
         };
         fetchMealInfo();
-    }, [id]); // 👈 dependency array: refetch if id changes
+    }, [id]); // dependency array: refetch if id changes
 
 
     const getIngredients = (mealInfo) => {
@@ -61,7 +61,7 @@ const Info = () => {
             if (ingredient && ingredient.trim() !== "") {
                 ingredients.push({
                     ingredient,
-                    measure: measure ? measure.trim() : "", // fallback if measure is missing
+                    measure: measure ? measure.trim() : "", // ternary in case measure is missing
                 });
             }
         }
@@ -82,6 +82,7 @@ const Info = () => {
 
     const ingredients = getIngredients(mealInfo);
 
+    // Seperating creds from code
     const appId = import.meta.env.VITE_NUTRITIONIX_APP_ID;
     const appKey = import.meta.env.VITE_NUTRITIONIX_APP_KEY;
 
@@ -176,7 +177,6 @@ const Info = () => {
             <button onClick={test}>Test</button>
             {mealInfo.strYoutube && (
                 <div style={{ marginTop: '1rem' }}>
-                    {/*<a href={mealInfo.strYoutube} target="_blank" rel="noopener noreferrer">Watch Tutorial</a>*/}
                     <YoutubeVideo mealInfo={mealInfo}/>
                 </div>
             )}

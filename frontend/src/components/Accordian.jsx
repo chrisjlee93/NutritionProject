@@ -11,23 +11,6 @@ import YoutubeVideo from "./YoutubeVideos.jsx";
 
 export default function AccordionItem({info}) {
 
-
-    // To grab the youtube video id to allow it to display it in the embedded player
-    const extractYouTubeID = (url) => {
-        if (!url) return null;
-
-        const regex =
-            /(?:youtube\.com\/(?:[^/]+\/.+\/|(?:v|embed|shorts|watch)\/|.*[?&]v=)|youtu\.be\/)([^"&?/ ]{11})/;
-
-        const match = url.match(regex);
-        return match && match[1] ? match[1] : null;
-    };
-
-    const videoId = extractYouTubeID(info.strYoutube);
-    const embedUrl = videoId ? `https://www.youtube.com/embed/${videoId}` : null;
-
-
-
     return (
         <div>
             <Accordion>

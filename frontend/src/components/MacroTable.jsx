@@ -8,6 +8,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
 
+// Separating the table component to help clean up code
 export default function MacroTable({Macros}) {
     return (
         <TableContainer component={Paper}>

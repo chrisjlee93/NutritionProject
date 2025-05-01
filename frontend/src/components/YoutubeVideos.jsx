@@ -4,9 +4,12 @@ import Box from "@mui/material/Box";
 
 const YoutubeVideo = ({mealInfo}) => {
 
+
+    // To grab the youtube video id to allow it to display it in the embedded player
     const extractYouTubeID = (url) => {
         if (!url) return null;
 
+        // Regex to accept all valid youtube links
         const regex =
             /(?:youtube\.com\/(?:[^/]+\/.+\/|(?:v|embed|shorts|watch)\/|.*[?&]v=)|youtu\.be\/)([^"&?/ ]{11})/;
 
@@ -14,6 +17,7 @@ const YoutubeVideo = ({mealInfo}) => {
         return match && match[1] ? match[1] : null;
     };
 
+    // Youtube for some reason does not like direct link calls
     const videoId = extractYouTubeID(mealInfo.strYoutube);
     const embedUrl = videoId ? `https://www.youtube.com/embed/${videoId}` : null;
 

@@ -8,12 +8,15 @@ import NavBar from "./components/Navbar.jsx";
 import Landing from "./components/Landing.jsx";
 import {useEffect} from "react";
 import Toolbar from "@mui/material/Toolbar";
+import Info from "./components/Info.jsx"
+import AddFavorite from "./components/AddFavorite.jsx";
 
 const App = () => {
 
 
     return (
         <>
+            {/*Handles all the routes to each component*/}
             <Router>
                 <NavBar />
                 <Toolbar />
@@ -21,7 +24,8 @@ const App = () => {
                     <Routes>
                         <Route path={"/"} element={<Landing/>}/>
                         <Route path={"/mealDB"} element={<MealDB/>}/>
-                        {/*<Route path={"/spoon"} element={<Spoon/>}/>*/}
+                        <Route path="/info/:id" element={<Info />} />
+                        <Route path={"/favorites"} element={<AddFavorite/>}/>
                     </Routes>
                 </div>
             </Router>

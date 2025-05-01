@@ -7,8 +7,17 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
+import {useState} from "react";
+import {Drawer, List, ListItem} from "@mui/material";
 
 export default function NavBar() {
+
+    const [visible, setVisible] = useState(false)
+
+    const toggleDrawer = (state) => {
+        setVisible(state)
+    }
+
     return (
         <Box sx={{ flexGrow: 1 }}>
             <AppBar position="fixed" >
@@ -19,6 +28,7 @@ export default function NavBar() {
                         color="inherit"
                         aria-label="menu"
                         sx={{ mr: 2 }}
+                        onClick={() => toggleDrawer(true)}
                     >
                         <MenuIcon />
                     </IconButton>
@@ -29,13 +39,38 @@ export default function NavBar() {
                         <Link to="/mealDB" style={{ marginRight: '1rem', textDecoration: 'none' }}>
                             Search by Ingredient
                         </Link>
-                        <Link to="/spoon" style={{ marginRight: '1rem', textDecoration: 'none' }}>
-                            Spoon
-                        </Link>
                     </Typography>
                     {/*<Button color="inherit">Login</Button>*/}
                 </Toolbar>
             </AppBar>
+
+            <Drawer anchor="left" open={visible} onClose={() => toggleDrawer(false)}>
+                <Box
+                    sx={{ width: 250 }}
+                    role="presentation"
+                    onClick={() => toggleDrawer(false)}
+                    onKeyDown={() => toggleDrawer(false)}
+                >
+                    <List>
+                        <ListItem>
+                            <Link to="/" style={{ marginRight: '1rem', textDecoration: 'none' }}>
+                                Home
+                            </Link>
+                        </ListItem>
+                        <ListItem>
+                            <Link to="/mealDB" style={{ marginRight: '1rem', textDecoration: 'none' }}>
+                                Search by Ingredient
+                            </Link>
+                        </ListItem>
+                        <ListItem>
+                            <Link to="/favorites" style={{ marginRight: '1rem', textDecoration: 'none' }}>
+                                Add Fav
+                            </Link>
+                        </ListItem>
+                    </List>
+                </Box>
+            </Drawer>
         </Box>
+
     );
 }

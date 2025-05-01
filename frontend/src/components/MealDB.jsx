@@ -3,12 +3,11 @@ import axios from 'axios';
 import MealDBCard from "./MealDBCard.jsx";
 import Box from "@mui/material/Box";
 
+// Main component that communicates with the MealDB API
 const MealDB = () => {
     const [ingredient, setIngredient] = useState('');
     const [meals, setMeals] = useState([]);
     const [recipes, setRecipes] = useState([])
-
-    // console.log('meal db loaded')
 
     const handleSearch = async () => {
         try {
@@ -22,12 +21,10 @@ const MealDB = () => {
             console.error('Error fetching meals:', err);
         }
         console.log(recipes)
-
     };
 
     const getRecipe = async (meals) => {
         const fetchedRecipes = [];
-
         for (let m of meals)
             try {
             const res = await axios.get('https://www.themealdb.com/api/json/v1/1/lookup.php?', {
@@ -55,14 +52,20 @@ const MealDB = () => {
     return (
         <Box sx={{display: 'flex', alignItems: 'center', flexDirection: 'column'}}>
             <h1 >Search Meals by Ingredient</h1>
-            {/*<button onClick={handleClick}>Test!</button>*/}
+            <button onClick={handleClick}>Just for testing purposes</button>
             <input
+                style={{width: '300px', height: '25px', fontSize: '1.1rem'}}
                 type="text"
                 placeholder="e.g. chicken, beef..."
                 value={ingredient}
                 onChange={(e) => setIngredient(e.target.value)}
             />
-            <button onClick={handleSearch}>Search</button>
+            <button
+                style={{margin: '20px', width: '80px', height: '30px'}}
+                onClick={handleSearch}
+            >
+                Search
+            </button>
 
             <div
                 style={{
@@ -76,7 +79,6 @@ const MealDB = () => {
                     combined.map(el => (
                         <MealDBCard key={el.meal.idMeal} data={el} />
                     ))
-
                 ) : (
                     <p>No meals found</p>
                 )}
