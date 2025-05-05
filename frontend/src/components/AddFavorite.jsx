@@ -1,32 +1,37 @@
 import {useEffect, useState} from "react";
 import Box from "@mui/material/Box";
 import {
+    CircularProgress,
     FormControl,
-    FormControlLabel,
-    FormGroup, FormLabel,
-    InputLabel,
-    MenuItem, RadioGroup,
+    FormControlLabel, FormLabel, RadioGroup,
     Rating,
-    Select,
     TextField
 } from "@mui/material";
 import Radio from '@mui/material/Radio';
 import StarIcon from '@mui/icons-material/Star';
-import {useParams} from "react-router-dom";
+import {useLocation, useNavigate, useParams} from "react-router-dom";
 import axios from "axios";
+import * as React from "react";
+import MacroTable from "./MacroTable.jsx";
 
-const addFavorite = ({meal}) => {
+
+const addFavorite = () => {
     const { id } = useParams(); // 🛠 Grab meal ID from URL
 
-    const initalForm = {
-        category: '',
+    const initialForm = {
+        category: 'other',
         value: 3,
-        // comments: ''
+        comments: ''
     }
 
+    const navigate = useNavigate();
+
+    const location = useLocation();
+    const {macros, meal} = location.state || {};
+
     // Use State Area
-    const [form, setForm] = useState(initalForm)
-    const {category, value} = form
+    const [form, setForm] = useState(initialForm)
+    const {category, value, comments} = form
     const [hover, setHover] = useState(-1);
 
     // Rating settings
@@ -47,50 +52,37 @@ const addFavorite = ({meal}) => {
         return `${value} Star${value !== 1 ? 's' : ''}, ${labels[value]}`;
     }
 
-
     const handleChange = (e) => {
-        setForm({...form,[e.target.value]:e.target.value});
+        setForm({...form,[e.target.name]:e.target.value});
         console.log(form)
     };
 
-
     const handleSubmit = (e) => {
         e.preventDefault()
+    //     Will handle the data here and send it to a db and navigate to favorites page
+
+        navigate('/favorites/')
+    //     Error handling if needed
     }
-
-    // Call and load from API based on ID
-    useEffect(() => {
-        const fetchMealInfo = async () => {
-            try {
-                const response = await axios.get('https://www.themealdb.com/api/json/v1/1/lookup.php', {
-                    params: { i: id }
-                });
-                if (response.data.meals && response.data.meals.length > 0) {
-                    setMealInfo(response.data.meals[0]); // first meal result
-                } else {
-                    setError('No meal found');
-                }
-            } catch (err) {
-                console.error('Failed to fetch meal:', err);
-                setError('Failed to fetch meal');
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchMealInfo();
-    }, [id]); // dependency array: refetch if id changes
-
 
     return (
         <>
             <Box>
-                <p>Meal Stuff here</p>
+                <Box sx={{display: 'flex', justifyContent: 'center'}}> <h1>{meal.strMeal}</h1>
+                </Box>
+                <Box sx={{display: 'flex', justifyContent: 'center'}}>
+                    <img src={meal.strMealThumb} alt={meal.strMeal} style={{ width: '400px', borderRadius: '8px' }} />
+                </Box>
+
+
             </Box>
+
             <Box
                 component="form"
-                sx={{ display: 'flex', flexDirection: 'column', '& > :not(style)': { m: 1, width: '75ch' }}}
+                sx={{ display: 'flex', alignItems: 'center' , flexDirection: 'column', '& > :not(style)': { m: 1, width: '75ch' }}}
                 noValidate
                 autoComplete="off"
+                onSubmit={handleSubmit}
             >
 
                 {/*Meal Type Category Selection*/}
@@ -98,21 +90,31 @@ const addFavorite = ({meal}) => {
                     <FormLabel id="catergory-radio">Category</FormLabel>
                     <RadioGroup
                         row
-                        aria-labelledby="categoryRadios"
+                        defaultValue={'other'}
+                        defaultChecked={true}
+                        // aria-labelledby="categoryRadios"
                         name="category"
+                        value={category}
                         onChange={handleChange}
                     >
-                        <FormControlLabel value="breakfast" control={<Radio />} label="Breakfast" />
-                        <FormControlLabel value="lunch" control={<Radio />} label="Lunch" />
-                        <FormControlLabel value="dinner" control={<Radio />} label="Dinner" />
-                        <FormControlLabel value="snack" control={<Radio />} label="Snack" />
-                        <FormControlLabel value="other" defaultChecked={'true'} control={<Radio />} label="Other" />
+                        <FormControlLabel value="main" control={<Radio />} label="Main Course" />
+                        <FormControlLabel value="app" control={<Radio />} label="Appetizer" />
+                        <FormControlLabel value="side" control={<Radio />} label="Side" />
+                        <FormControlLabel value="dessert" control={<Radio />} label="Desert" />
+                        <FormControlLabel value="other" control={<Radio />} label="Other" />
                     </RadioGroup>
                 </FormControl>
 
                 <Box>
-                    <TextField fullWidth id="comments" multiline rows={5} label="Comments" variant="outlined" />
+                    <TextField fullWidth onChange={handleChange} name={"comments"} value={comments} multiline rows={5} label="Comments" variant="outlined" />
                 </Box>
+
+                {/*Just making sure that the Macros state is being passed to be able to add it to the DB from this component*/}
+                {/*<Box sx={{ flex: 1}}>*/}
+                {/*    <h2>Macros</h2>*/}
+                {/*    <MacroTable Macros={macros[0]} size={size} />*/}
+                {/*</Box>*/}
+                {/*<button >Save Macros</button>*/}
 
                 {/*MUI Rating Element*/}
                 <Box sx={{ width: 650, display: 'flex', alignItems: 'center' }}>
@@ -135,7 +137,7 @@ const addFavorite = ({meal}) => {
                     )}
                 </Box>
 
-                <button type={'submit'}> Submit </button>
+                <button type={'submit'} > Submit </button>
 
             </Box>
         </>

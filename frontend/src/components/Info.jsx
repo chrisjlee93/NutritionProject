@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import {CircularProgress, FormControl, InputLabel, MenuItem, Select} from "@mui/material";
@@ -13,23 +13,20 @@ import YoutubeVideo from "./YoutubeVideos.jsx";
 
 
 const Info = () => {
-    const { id } = useParams(); // 🛠 Grab meal ID from URL
-    const [mealInfo, setMealInfo] = useState(null); // 🛠 store the meal data
-    const [loading, setLoading] = useState(true);   // 🛠 loading state
-    const [error, setError] = useState(null);        // 🛠 error handling
+    const { id } = useParams(); // Grab meal ID from URL
+    const [mealInfo, setMealInfo] = useState(null); // axios store the meal data
+    const [loading, setLoading] = useState(true);   // axios loading state
+    const [error, setError] = useState(null);        // error handling
     const [macros, setMacros] = useState(null)
     const [tableVisibility, setTableVisibility] = useState(false)
     const [size, setSize] = useState(1)
 
-    // const initalMacros = {
-    //     calories: 0,
-    //     protein: 0,
-    //     carbs: 0,
-    //     fat: 0,
-    //     satFat: 0,
-    //     sodium: 0,
-    //     sugar: 0,
-    // }
+    // This is what is used to open a unique page for each meal based on the MealDB ID
+    const navigate = useNavigate();
+
+    const openFavorite = () => {
+        navigate(`/favorites/${id}`, {state: {macros: macros, meal: mealInfo}} )
+    }
 
     useEffect(() => {
         const fetchMealInfo = async () => {
@@ -144,7 +141,7 @@ const Info = () => {
             <Box sx={{display: 'flex', justifyContent: 'center'}}> <h1>{mealInfo.strMeal}</h1>
                 <IconButton
                     aria-label="add to favorites"
-                    // onClick={addToFavorites}
+                    onClick={openFavorite}
                 >
                     <FavoriteIcon />
                 </IconButton>

@@ -8,7 +8,7 @@ import IconButton from "@mui/material/IconButton";
 import {CardActions} from "@mui/material";
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import InfoIcon from '@mui/icons-material/Info';
-import { useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 
 const MealDBCard = ({data}) => {
     const {meal, recipe} = data
@@ -34,6 +34,7 @@ const MealDBCard = ({data}) => {
                     height={300}
                     image={meal.strMealThumb}
                     alt={meal.strMeal}
+                    onClick={openInfo}
                 />
                 <CardContent>
                     <Typography gutterBottom variant="h5" component="div">
@@ -52,12 +53,12 @@ const MealDBCard = ({data}) => {
                         )}
 
                     <CardActions disableSpacing>
-                        <IconButton
-                            aria-label="add to favorites"
-                            onClick={openFavorite}
-                        >
-                            <FavoriteIcon />
-                        </IconButton>
+                        {/*<IconButton*/}
+                        {/*    aria-label="add to favorites"*/}
+                        {/*    onClick={openFavorite}*/}
+                        {/*>*/}
+                        {/*    <FavoriteIcon />*/}
+                        {/*</IconButton>*/}
                         <IconButton
                             aria-label="add to favorites"
                             onClick={openInfo}
