@@ -1,9 +1,9 @@
 package com.lee.healthapp.entity;
 
 import jakarta.persistence.*;
-
 import java.util.List;
 
+@Entity
 public class Meal {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,6 +15,8 @@ public class Meal {
     private Double rating;
     private Long mealId;
 
+    private String externalId;
+
     @ElementCollection
     @CollectionTable(name = "ingredients", joinColumns = @JoinColumn(name = "meal_id"))
     @Column(name = "ingredient")
@@ -24,7 +26,7 @@ public class Meal {
     @JoinColumn(name = "macro_id", referencedColumnName = "id")
     private Macros macros;
 
-    public Meal(String name, String category, String imageUrl, String comments, Double rating, Long mealId, List<String> ingredients, Macros macros) {
+    public Meal(String name, String category, String imageUrl, String comments, Double rating, Long mealId, List<String> ingredients, Macros macros, String extId) {
         this.name = name;
         this.category = category;
         this.imageUrl = imageUrl;
@@ -33,9 +35,22 @@ public class Meal {
         this.mealId = mealId;
         this.ingredients = ingredients;
         this.macros = macros;
+        this.externalId = extId;
     }
 
     public Meal() {
+    }
+
+    public String getExternalId() {
+        return externalId;
+    }
+
+    public void setExternalId(String externalId) {
+        this.externalId = externalId;
+    }
+
+    public void setMacros(Macros macros) {
+        this.macros = macros;
     }
 
     public Long getId() {

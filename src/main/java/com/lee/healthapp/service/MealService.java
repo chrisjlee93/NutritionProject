@@ -1,26 +1,16 @@
 package com.lee.healthapp.service;
 
+import com.lee.healthapp.dto.MealDTO;
 import com.lee.healthapp.entity.Meal;
-import com.lee.healthapp.repository.MealRepository;
 
 import java.util.List;
 
-public class MealService {
+public interface MealService {
+    Meal createMeal(MealDTO dto);
+    List<Meal> getAllMeals();
+    Meal getMealById(Long id);
 
-    private final MealRepository mealRepository;
+    void deleteMeal(Long id);
 
-    public MealService(MealRepository mealRepository) {
-        this.mealRepository = mealRepository;
-    }
-
-    public List<Meal> getAllMeals() {
-        return mealRepository.findAll();
-    }
-
-    public Meal createMeal(Meal meal) {
-        return mealRepository.save(meal);
-    }
-
-
-
+    Meal updateMeal(Long id, MealDTO dto);
 }

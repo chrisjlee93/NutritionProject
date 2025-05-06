@@ -2,7 +2,7 @@ package com.lee.healthapp.controller;
 
 
 import com.lee.healthapp.entity.Meal;
-import com.lee.healthapp.service.MealService;
+import com.lee.healthapp.service.MealServiceImpl;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,9 +11,9 @@ import java.util.List;
 @RequestMapping("/api/meals")
 public class MealController {
 
-    private final MealService mealService;
+    private final MealServiceImpl mealService;
 
-    public MealController(MealService mealService) {
+    public MealController(MealServiceImpl mealService) {
         this.mealService = mealService;
     }
 
