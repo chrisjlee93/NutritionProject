@@ -14,7 +14,6 @@ import java.util.List;
 public class MealServiceImpl implements MealService {
 
     private final MealRepository mealRepo;
-    private final MacrosService macrosService;
 
     public MealServiceImpl(MealRepository mealRepo, MacrosService macrosService) {
         this.mealRepo = mealRepo;

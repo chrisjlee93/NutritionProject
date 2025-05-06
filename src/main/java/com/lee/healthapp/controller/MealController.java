@@ -1,8 +1,9 @@
 package com.lee.healthapp.controller;
 
 
+import com.lee.healthapp.dto.MealDTO;
 import com.lee.healthapp.entity.Meal;
-import com.lee.healthapp.service.MealServiceImpl;
+import com.lee.healthapp.service.MealService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,9 +12,9 @@ import java.util.List;
 @RequestMapping("/api/meals")
 public class MealController {
 
-    private final MealServiceImpl mealService;
+    private final MealService mealService;
 
-    public MealController(MealServiceImpl mealService) {
+    public MealController(MealService mealService) {
         this.mealService = mealService;
     }
 
@@ -22,9 +23,24 @@ public class MealController {
         return mealService.getAllMeals();
     }
 
+    @GetMapping("/{id}")
+    public Meal getMealById(Long id) {
+        return mealService.getMealById(id);
+    }
+
     @PostMapping
-    public Meal createMeal(@RequestBody Meal meal) {
+    public Meal createMeal(@RequestBody MealDTO meal) {
         return mealService.createMeal(meal);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteMeal(Long id) {
+        mealService.deleteMeal(id);
+    }
+
+    @PutMapping("/{id}")
+    public Meal updateMealById(Long id, @RequestBody MealDTO meal) {
+        return mealService.updateMeal(id, meal);
     }
 
 
