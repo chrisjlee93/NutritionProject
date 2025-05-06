@@ -22,7 +22,7 @@ public class MealController {
         return mealService.getAllMeals();
     }
 
-    PostMapping
+    @PostMapping
     public Meal createMeal(@RequestBody Meal meal) {
         return mealService.createMeal(meal);
     }

@@ -1,27 +1,41 @@
 package com.lee.healthapp.entity;
 
-import java.time.LocalDateTime;
+import jakarta.persistence.*;
+
+import java.util.List;
 
 public class Meal {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long MealId;
     private String name;
-    private int calories;
-    private int protein;
-    private int fat;
-    private int carbs;
-    private LocalDateTime timestamp;
+    private String category;
+    private String imageUrl;
+    private String comments;
+    private Double rating;
+    private Long mealId;
 
-    public Meal() {
+    @ElementCollection
+    @CollectionTable(name = "ingredients", joinColumns = @JoinColumn(name = "meal_id"))
+    @Column(name = "ingredient")
+    private List<String> ingredients;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "macro_id", referencedColumnName = "id")
+    private Macros macros;
+
+    public Meal(String name, String category, String imageUrl, String comments, Double rating, Long mealId, List<String> ingredients, Macros macros) {
+        this.name = name;
+        this.category = category;
+        this.imageUrl = imageUrl;
+        this.comments = comments;
+        this.rating = rating;
+        this.mealId = mealId;
+        this.ingredients = ingredients;
+        this.macros = macros;
     }
 
-    public Meal(String name, int calories, int protein, int fat, int carbs, LocalDateTime timestamp) {
-        this.name = name;
-        this.calories = calories;
-        this.protein = protein;
-        this.fat = fat;
-        this.carbs = carbs;
-        this.timestamp = timestamp;
+    public Meal() {
     }
 
     public Long getId() {
@@ -40,43 +54,60 @@ public class Meal {
         this.name = name;
     }
 
-    public int getCalories() {
-        return calories;
+    public String getCategory() {
+        return category;
     }
 
-    public void setCalories(int calories) {
-        this.calories = calories;
+    public void setCategory(String category) {
+        this.category = category;
     }
 
-    public int getProtein() {
-        return protein;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public void setProtein(int protein) {
-        this.protein = protein;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
-    public int getFat() {
-        return fat;
+    public String getComments() {
+        return comments;
     }
 
-    public void setFat(int fat) {
-        this.fat = fat;
+    public void setComments(String comments) {
+        this.comments = comments;
     }
 
-    public int getCarbs() {
-        return carbs;
+    public Double getRating() {
+        return rating;
     }
 
-    public void setCarbs(int carbs) {
-        this.carbs = carbs;
+    public void setRating(Double rating) {
+        this.rating = rating;
     }
 
-    public LocalDateTime getTimestamp() {
-        return timestamp;
+    public Long getMealId() {
+        return mealId;
     }
 
-    public void setTimestamp(LocalDateTime timestamp) {
-        this.timestamp = timestamp;
+    public void setMealId(Long mealId) {
+        this.mealId = mealId;
+    }
+
+    public List<String> getIngredients() {
+        return ingredients;
+    }
+
+    public void setIngredients(List<String> ingredients) {
+        this.ingredients = ingredients;
+    }
+
+    public Macros getMacros() {
+        return macros;
+    }
+
+    public void setMacro(Macros macros) {
+        this.macros = macros;
     }
 }
+
