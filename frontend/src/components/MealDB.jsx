@@ -39,11 +39,6 @@ const MealDB = () => {
         setRecipes(fetchedRecipes)
     };
 
-    const handleClick = (e) => {
-        e.preventDefault()
-        console.log(recipes)
-    }
-
     const combined = meals.map((meal, index) => ({
         meal,
         recipe: recipes [index] || null
@@ -51,8 +46,7 @@ const MealDB = () => {
 
     return (
         <Box sx={{display: 'flex', alignItems: 'center', flexDirection: 'column'}}>
-            <h1 >Search Meals by Ingredient</h1>
-            <button onClick={handleClick}>Just for testing purposes</button>
+            <h1 >Search MealDB by Ingredient</h1>
             <input
                 style={{width: '300px', height: '25px', fontSize: '1.1rem'}}
                 type="text"
