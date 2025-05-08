@@ -25,7 +25,7 @@ const Info = () => {
     const navigate = useNavigate();
 
     const openFavorite = () => {
-        navigate(`/favorites/${id}`, {state: {macros: macros, meal: mealInfo}} )
+        navigate(`/add/${id}`, {state: {macros: macros, meal: mealInfo}} )
     }
 
     useEffect(() => {

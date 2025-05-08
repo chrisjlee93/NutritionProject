@@ -6,6 +6,9 @@ public class MealDTO {
     public String name;
     public String category;
     public String imageUrl;
+    public String recipe;
+    public String recipeLink;
+    public String video;
     public String comments;
     public Double rating;
     public String externalId;

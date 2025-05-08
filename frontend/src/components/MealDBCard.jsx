@@ -28,6 +28,7 @@ const MealDBCard = ({data}) => {
 
     return(
         <Card sx={{ maxWidth: 400 }}>
+            {/*Card action denotes the area that can be interacted with by the user*/}
             <CardActionArea>
                 <CardMedia
                     component="img"
@@ -36,11 +37,12 @@ const MealDBCard = ({data}) => {
                     alt={meal.strMeal}
                     onClick={openInfo}
                 />
+            </CardActionArea>
+
                 <CardContent>
                     <Typography gutterBottom variant="h5" component="div">
                         {meal.strMeal}
                     </Typography>
-
                     {/*Will only load this element if content for it exists */}
                     {recipe && (
                         <div>
@@ -51,23 +53,7 @@ const MealDBCard = ({data}) => {
                             <AccordionItem info={recipe}/>
                         </div>
                         )}
-
-                    <CardActions disableSpacing>
-                        {/*<IconButton*/}
-                        {/*    aria-label="add to favorites"*/}
-                        {/*    onClick={openFavorite}*/}
-                        {/*>*/}
-                        {/*    <FavoriteIcon />*/}
-                        {/*</IconButton>*/}
-                        <IconButton
-                            aria-label="add to favorites"
-                            onClick={openInfo}
-                        >
-                            <InfoIcon />
-                        </IconButton>
-                    </CardActions>
                 </CardContent>
-            </CardActionArea>
         </Card>
     )
 

@@ -8,7 +8,12 @@ export default defineConfig({
   plugins: [react()],
   define: {
     "process.env": dotenv.config().parsed
+  },
+server: {
+  proxy: {
+    '/api': 'http://localhost:8080'
   }
+}
 
 
 

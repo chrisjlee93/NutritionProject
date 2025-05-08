@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/api/meals")
 public class MealController {
@@ -24,7 +25,7 @@ public class MealController {
     }
 
     @GetMapping("/{id}")
-    public Meal getMealById(Long id) {
+    public Meal getMealById(@PathVariable Long id) {
         return mealService.getMealById(id);
     }
 
@@ -34,12 +35,12 @@ public class MealController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteMeal(Long id) {
+    public void deleteMeal(@PathVariable Long id) {
         mealService.deleteMeal(id);
     }
 
     @PutMapping("/{id}")
-    public Meal updateMealById(Long id, @RequestBody MealDTO meal) {
+    public Meal updateMealById(@PathVariable Long id, @RequestBody MealDTO meal) {
         return mealService.updateMeal(id, meal);
     }
 

@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import Box from "@mui/material/Box";
 import {
     CircularProgress,
@@ -10,13 +10,12 @@ import {
 import Radio from '@mui/material/Radio';
 import StarIcon from '@mui/icons-material/Star';
 import {useLocation, useNavigate, useParams} from "react-router-dom";
-import axios from "axios";
 import * as React from "react";
-import MacroTable from "./MacroTable.jsx";
+import {addMeals} from "./service.js";
 
 
 const addFavorite = () => {
-    const { id } = useParams(); // 🛠 Grab meal ID from URL
+    const { id } = useParams(); // Grab meal ID from URL
 
     const initialForm = {
         category: 'other',
@@ -54,14 +53,67 @@ const addFavorite = () => {
 
     const handleChange = (e) => {
         setForm({...form,[e.target.name]:e.target.value});
-        console.log(form)
     };
 
-    const handleSubmit = (e) => {
+    const extractIngredients = (mealObj) => {
+        const ingredients = [];
+
+        for (let i = 1; i <= 20; i++) {
+            const ingredient = mealObj[`strIngredient${i}`];
+            const measure = mealObj[`strMeasure${i}`];
+
+            if (ingredient && ingredient.trim()) {
+                const formatted = `${measure?.trim() || ''} ${ingredient.trim()}`.trim();
+                ingredients.push(formatted);
+            }
+        }
+
+        return ingredients;
+    };
+
+
+    // const extractIngredients = (mealObj) => {
+    //     return Object.entries(mealObj)
+    //         .filter(([key, val]) => key.startsWith("strIngredient") && val)
+    //         .map(([_, val]) => val);
+    // };
+
+    const handleSubmit = async (e) => {
         e.preventDefault()
+        // addMeals()
+        const newMeal = {
+            name: meal.strMeal,
+            category: form.category,
+            imageUrl: meal.strMealThumb,
+            recipe: meal.strInstructions,
+            recipeLink: meal.strSource,
+            video: meal.strYoutube,
+            externalId: meal.idMeal,
+            comments: form.comments,
+            rating: form.value,
+            ingredients: extractIngredients(meal),
+            macros: {
+                calories: macros[0].nf_calories,
+                protein: macros[0].nf_protein,
+                fat: macros[0].nf_total_fat,
+                satFat: macros[0].nf_saturated_fat,
+                carbs: macros[0].nf_total_carbohydrate,
+                sugar: macros[0].nf_sugars,
+                sodium: macros[0].nf_sodium,
+            }
+        };
+
+        try {
+            await addMeals(newMeal); // or axios.post(...)
+            navigate('/favorites');
+        } catch (err) {
+            console.error("Error saving meal:", err);
+        }
+        console.log(newMeal)
+        // console.log(form)
     //     Will handle the data here and send it to a db and navigate to favorites page
 
-        navigate('/favorites/')
+        // navigate('/favorites/')
     //     Error handling if needed
     }
 
@@ -97,11 +149,11 @@ const addFavorite = () => {
                         value={category}
                         onChange={handleChange}
                     >
-                        <FormControlLabel value="main" control={<Radio />} label="Main Course" />
-                        <FormControlLabel value="app" control={<Radio />} label="Appetizer" />
-                        <FormControlLabel value="side" control={<Radio />} label="Side" />
-                        <FormControlLabel value="dessert" control={<Radio />} label="Desert" />
-                        <FormControlLabel value="other" control={<Radio />} label="Other" />
+                        <FormControlLabel value="Main Course" control={<Radio />} label="Main Course" />
+                        <FormControlLabel value="Appetizer" control={<Radio />} label="Appetizer" />
+                        <FormControlLabel value="Side Dish" control={<Radio />} label="Side Dish" />
+                        <FormControlLabel value="Dessert" control={<Radio />} label="Desert" />
+                        <FormControlLabel value="Other" control={<Radio />} label="Other" />
                     </RadioGroup>
                 </FormControl>
 
@@ -137,7 +189,7 @@ const addFavorite = () => {
                     )}
                 </Box>
 
-                <button type={'submit'} > Submit </button>
+                <button type={'submit'}> Submit </button>
 
             </Box>
         </>

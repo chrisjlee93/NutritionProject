@@ -64,7 +64,7 @@ export default function NavBar() {
                         </ListItem>
                         <ListItem>
                             <Link to="/favorites" style={{ marginRight: '1rem', textDecoration: 'none' }}>
-                                Add Fav
+                                Favorites
                             </Link>
                         </ListItem>
                     </List>

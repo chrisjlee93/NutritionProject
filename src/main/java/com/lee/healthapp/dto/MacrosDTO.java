@@ -1,11 +1,11 @@
 package com.lee.healthapp.dto;
 
 public class MacrosDTO {
-    public double calories;
-    public double protein;
-    public double fat;
-    public double satFat;
-    public double carbs;
-    public double sugar;
-    public double sodium;
+    public Double calories;
+    public Double protein;
+    public Double fat;
+    public Double satFat;
+    public Double carbs;
+    public Double sugar;
+    public Double sodium;
 }

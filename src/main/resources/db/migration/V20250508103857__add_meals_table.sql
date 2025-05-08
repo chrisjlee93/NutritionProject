@@ -10,7 +10,7 @@ CREATE TABLE meal
     name        VARCHAR(255),
     category    VARCHAR(255),
     image_url   VARCHAR(255),
-    recipe      VARCHAR(255),
+    recipe      TEXT,
     recipe_link VARCHAR(255),
     video       VARCHAR(255),
     comments    VARCHAR(255),
