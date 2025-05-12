@@ -12,13 +12,14 @@ import {useState} from "react";
 // Separating the table component to help clean up code
 export default function MacroTable({Macros, size}) {
 
-    const calories = Number(Macros.nf_calories)
-    const protein = Number(Macros.nf_protein)
-    const carbs = Number(Macros.nf_total_carbohydrate)
-    const fat = Number(Macros.nf_total_fat)
-    const satFat = Number(Macros.nf_saturated_fat)
-    const sugar = Number(Macros.nf_sugars)
-    const sodium = Number(Macros.nf_sodium)
+    const calories = Number(Macros?.nf_calories ?? Macros?.calories ?? 0);
+    const protein = Number(Macros?.nf_protein ?? Macros?.protein ?? 0);
+    const carbs = Number(Macros?.nf_total_carbohydrate ?? Macros?.carbs ?? 0);
+    const fat = Number(Macros?.nf_total_fat ?? Macros?.fat ?? 0);
+    const satFat = Number(Macros?.nf_saturated_fat ?? Macros?.satFat ?? 0);
+    const sugar = Number(Macros?.nf_sugars ?? Macros?.sugar ?? 0);
+    const sodium = Number(Macros?.nf_sodium ?? Macros?.sodium ?? 0);
+
 
     const initalMacros = {
         calories,

@@ -55,6 +55,8 @@ const addFavorite = () => {
         setForm({...form,[e.target.name]:e.target.value});
     };
 
+
+    //put ingredients and measurements into combined string to store in DB
     const extractIngredients = (mealObj) => {
         const ingredients = [];
 
@@ -71,12 +73,6 @@ const addFavorite = () => {
         return ingredients;
     };
 
-
-    // const extractIngredients = (mealObj) => {
-    //     return Object.entries(mealObj)
-    //         .filter(([key, val]) => key.startsWith("strIngredient") && val)
-    //         .map(([_, val]) => val);
-    // };
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -105,16 +101,13 @@ const addFavorite = () => {
 
         try {
             await addMeals(newMeal); // or axios.post(...)
+            // on success will navigate to favorites page
             navigate('/favorites');
         } catch (err) {
             console.error("Error saving meal:", err);
         }
-        console.log(newMeal)
-        // console.log(form)
-    //     Will handle the data here and send it to a db and navigate to favorites page
-
-        // navigate('/favorites/')
-    //     Error handling if needed
+        // log for testing
+        // console.log(newMeal)
     }
 
     return (
@@ -125,8 +118,6 @@ const addFavorite = () => {
                 <Box sx={{display: 'flex', justifyContent: 'center'}}>
                     <img src={meal.strMealThumb} alt={meal.strMeal} style={{ width: '400px', borderRadius: '8px' }} />
                 </Box>
-
-
             </Box>
 
             <Box

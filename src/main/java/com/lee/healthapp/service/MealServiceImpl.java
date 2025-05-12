@@ -4,7 +4,9 @@ import com.lee.healthapp.dto.MealDTO;
 import com.lee.healthapp.entity.Macros;
 import com.lee.healthapp.entity.Meal;
 import com.lee.healthapp.repository.MealRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -53,6 +55,8 @@ public class MealServiceImpl implements MealService {
     public Meal getMealById(Long id) {
         return mealRepo.findById(id).orElse(null);
     }
+
+
 
     @Override
     public void deleteMeal(Long id) {

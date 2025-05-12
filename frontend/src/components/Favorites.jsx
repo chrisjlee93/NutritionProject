@@ -13,6 +13,7 @@ const Favorites = () => {
         fetchMeals().then(setFavorites)
     }, [refresh]);
 
+
     // Get unique, sorted category list
     const categoryList = favorites
         ? Array.from(new Set(favorites.map(meal => meal.category || "Uncategorized"))).sort()

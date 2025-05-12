@@ -8,6 +8,7 @@ import Info from "./components/Info.jsx"
 import AddFavorite from "./components/AddFavorite.jsx";
 import Favorites from "./components/Favorites.jsx";
 import FavoritesInfo from "./components/FavoritesInfo.jsx";
+import EditForm from "./components/EditForm.jsx";
 
 const App = () => {
 
@@ -26,6 +27,7 @@ const App = () => {
                         <Route path={"/add/:id"} element={<AddFavorite/>}/>
                         <Route path={"/favorites/"} element={<Favorites/>}/>
                         <Route path={"/favorites/:id"} element={<FavoritesInfo/>}/>
+                        <Route path={"/edit/:id"} element={<EditForm/>}/>
 
                     </Routes>
                 </div>

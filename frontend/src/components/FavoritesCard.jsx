@@ -9,36 +9,24 @@ import foodImage from "../assets/MissingFoodImage.png"
 import {Rating} from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
 import {deleteMeal} from "./service.js";
+import {useNavigate} from "react-router-dom";
 
 const FavoritesCard = ({meal, onDelete}) => {
 
     const {id, name, category, video, imageUrl, rating, comments, ingredients} = meal
 
-    const goToFavInfo = () => {
 
+    // This is what is used to open a unique page for each meal based on the MealDB ID
+    const navigate = useNavigate();
+
+    const goToFavInfo = () => {
+        navigate(`/favorites/${id}`)
     }
 
     const handleDelete = async () => {
         await deleteMeal(id)
         onDelete()
     }
-
-    const gotToEdit = () => {}
-
-    // const extractYouTubeID = (url) => {
-    //     if (!url) return null;
-    //
-    //     // Regex to accept all valid youtube links
-    //     const regex =
-    //         /(?:youtube\.com\/(?:[^/]+\/.+\/|(?:v|embed|shorts|watch)\/|.*[?&]v=)|youtu\.be\/)([^"&?/ ]{11})/;
-    //
-    //     const match = url.match(regex);
-    //     return match && match[1] ? match[1] : null;
-    // };
-    //
-    // // Youtube for some reason does not like direct link calls
-    // const videoId = extractYouTubeID(video);
-    // const embedUrl = videoId ? `https://www.youtube.com/embed/${videoId}` : null;
 
 
     return(
@@ -78,7 +66,7 @@ const FavoritesCard = ({meal, onDelete}) => {
                             <p><strong>Comments:</strong> {comments} </p>
                         </div>
                     <button onClick={handleDelete}> Delete </button>
-                    <button onClick={gotToEdit}> Delete </button>
+                    {/*<button onClick={goToEdit}> Edit </button>*/}
                 </CardContent>
         </Card>
     )
