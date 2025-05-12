@@ -17,7 +17,7 @@ public class LogData {
     private Macros macros;
 
     @ManyToOne
-    @JoinColumn(name = "water_log_id")
+    @JoinColumn(name = "water_log_id", nullable = false)
     private WaterLog waterLog;
 
     public LogData() {}

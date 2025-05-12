@@ -4,7 +4,7 @@ CREATE TABLE log_data
     name         VARCHAR(255),
     date_time    TIMESTAMP WITHOUT TIME ZONE,
     macro_id     BIGINT,
-    water_log_id BIGINT,
+    water_log_id BIGINT                                  NOT NULL,
     CONSTRAINT pk_logdata PRIMARY KEY (id)
 );
 

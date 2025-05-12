@@ -35,10 +35,12 @@ const Log = () => {
 
     const [form, setForm] = useState(initalForm)
     const {name, calories, protein, carbs, fat, satFat, sugar, sodium, waterIntake, date} = form
+    const [refresh, setRefresh] = useState(false)
+
 
     useEffect(() => {
         fetchLogsByDate().then(setLogs)
-    }, []);
+    }, [refresh]);
 
     useEffect(() => {
         const today = dayjs().format('YYYY-MM-DD');
@@ -77,6 +79,10 @@ const Log = () => {
         }
         createLog(newLog)
         console.log(logs)
+        formVisibility()
+        setRefresh((prev) => !prev)
+        setForm(initalForm)
+
     }
 
     return (
@@ -179,7 +185,7 @@ const Log = () => {
                 </ol>
                 <Box>
                     <h2>Log for {dayjs(logDay).format('MMM D, YYYY')}</h2>
-                    <p>💧 Water: {logs.waterLog.waterAmount} cups </p>
+                    {/*<p>💧 Water: {logs.waterLog.waterAmount} cups </p>*/}
                     <LogList data={logs[logDay] || []} />
                 </Box>
             </Box>

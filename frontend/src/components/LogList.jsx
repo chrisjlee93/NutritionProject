@@ -36,7 +36,6 @@ const LogList = ({ data }) => {
 
     return (
         <div>
-            <p>{data.waterLog.waterAmount}</p>
         <ul>
             {logList.map((log) => (
                 <li key={log.id}>
