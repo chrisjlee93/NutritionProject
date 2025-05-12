@@ -67,6 +67,11 @@ export default function NavBar() {
                                 Favorites
                             </Link>
                         </ListItem>
+                        <ListItem>
+                            <Link to="/logs" style={{ marginRight: '1rem', textDecoration: 'none' }}>
+                                Log
+                            </Link>
+                        </ListItem>
                     </List>
                 </Box>
             </Drawer>
