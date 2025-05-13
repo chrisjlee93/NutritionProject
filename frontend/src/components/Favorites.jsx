@@ -36,24 +36,13 @@ const Favorites = () => {
         return acc;
     }, {});
 
-    const handleClick = async () => {
-        await fetchMeals().then(setFavorites)
-    }
-
-    const handleClick2 = async () => {
-        console.log(favorites)
-    }
-
     const onDelete = () => {
         setRefresh(prev => !prev)
     }
 
     return (
         <>
-            <h1> Your Favorites!!! </h1>
-
-            {/*<button onClick={handleClick}> Test for axios</button>*/}
-            {/*<button onClick={handleClick2}> test state</button>*/}
+            <h1> Your Favorites </h1>
 
             <div>
                 <p>Leave Blank to See all</p>
@@ -96,22 +85,6 @@ const Favorites = () => {
                     </Box>
                 ))}
 
-
-            {/*<div*/}
-            {/*    style={{*/}
-            {/*        display: "flex",*/}
-            {/*        flexWrap: "wrap",*/}
-            {/*        gap: 16,*/}
-            {/*        justifyContent: "center"*/}
-            {/*    }}*/}
-            {/*>*/}
-            {/*    {favorites &&*/}
-            {/*    favorites.map(*/}
-            {/*        el =>*/}
-            {/*            <FavoritesCard meal={el} onDelete={onDelete}/>*/}
-            {/*        )*/}
-            {/*    }*/}
-            {/*</div>*/}
         </>
     )
 

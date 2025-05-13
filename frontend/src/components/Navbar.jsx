@@ -72,6 +72,11 @@ export default function NavBar() {
                                 Log
                             </Link>
                         </ListItem>
+                        <ListItem>
+                            <Link to="/recipe" style={{ marginRight: '1rem', textDecoration: 'none' }}>
+                                Add Recipe
+                            </Link>
+                        </ListItem>
                     </List>
                 </Box>
             </Drawer>

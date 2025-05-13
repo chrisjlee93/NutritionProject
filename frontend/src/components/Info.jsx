@@ -7,6 +7,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import IconButton from "@mui/material/IconButton";
 import MacroTable from "./MacroTable.jsx";
 import YoutubeVideo from "./YoutubeVideos.jsx";
+import {fetchMacrosFromIngredients} from "./service.js";
 
 const Info = () => {
     const { id } = useParams();
@@ -41,27 +42,34 @@ const Info = () => {
         return ingredients;
     };
 
-    const fetchMacros = async (ingredient) => {
-        try {
-            const response = await axios.post(
-                "https://trackapi.nutritionix.com/v2/natural/nutrients",
-                { query: ingredient },
-                {
-                    headers: {
-                        "x-app-id": appId,
-                        "x-app-key": appKey,
-                        "Content-Type": "application/json",
-                    },
-                }
-            );
-            const foods = response.data.foods;
-            setMacros(foods);
-            setTableVisibility(!!foods?.length);
-        } catch (error) {
-            console.error("Error fetching nutrition:", error);
-            setTableVisibility(false);
-        }
-    };
+    const buildIngredientString = (ingredients) =>
+        ingredients
+            .filter(i => i.ingredient && i.measure)
+            .map(i => `${i.measure} ${i.ingredient}`)
+            .join(', ');
+
+
+    // const fetchMacros = async (ingredient) => {
+    //     try {
+    //         const response = await axios.post(
+    //             "https://trackapi.nutritionix.com/v2/natural/nutrients",
+    //             { query: ingredient },
+    //             {
+    //                 headers: {
+    //                     "x-app-id": appId,
+    //                     "x-app-key": appKey,
+    //                     "Content-Type": "application/json",
+    //                 },
+    //             }
+    //         );
+    //         const foods = response.data.foods;
+    //         setMacros(foods);
+    //         setTableVisibility(!!foods?.length);
+    //     } catch (error) {
+    //         console.error("Error fetching nutrition:", error);
+    //         setTableVisibility(false);
+    //     }
+    // };
 
     useEffect(() => {
         const fetchMealInfo = async () => {
@@ -89,8 +97,28 @@ const Info = () => {
         const ingredients = getIngredients(mealInfo);
         const firstIngredient = ingredients[0];
         if (!firstIngredient) return;
-        fetchMacros(`${firstIngredient.measure} ${firstIngredient.ingredient}`);
+        // fetchMacros(`${firstIngredient.measure} ${firstIngredient.ingredient}`);
     }, [mealInfo]);
+
+    useEffect(() => {
+        const fetchAndSetMacros = async () => {
+            if (!mealInfo) return;
+
+            const ingredients = getIngredients(mealInfo);
+            const ingredientString = buildIngredientString(ingredients);
+
+            try {
+                const m = await fetchMacrosFromIngredients(ingredientString);
+                setMacros([m]); // Wrap in array if your MacroTable expects an array
+                setTableVisibility(true);
+            } catch (err) {
+                console.error("Error fetching macros:", err);
+                setTableVisibility(false);
+            }
+        };
+        fetchAndSetMacros();
+    }, [mealInfo]);
+
 
     if (loading) {
         return (
@@ -103,6 +131,7 @@ const Info = () => {
     if (error) return <p>{error}</p>;
 
     const ingredients = getIngredients(mealInfo);
+
     const videoId = mealInfo.strYoutube
         ? (mealInfo.strYoutube.match(
             /(?:youtube\.com\/(?:[^/]+\/.+\/|(?:v|embed|shorts|watch)\/|.*[?&]v=)|youtu\.be\/)([^"&?/ ]{11})/

@@ -18,7 +18,7 @@ const addFavorite = () => {
     const { id } = useParams(); // Grab meal ID from URL
 
     const initialForm = {
-        category: 'other',
+        category: 'Other',
         value: 3,
         comments: ''
     }
@@ -89,13 +89,13 @@ const addFavorite = () => {
             rating: form.value,
             ingredients: extractIngredients(meal),
             macros: {
-                calories: macros[0].nf_calories,
-                protein: macros[0].nf_protein,
-                fat: macros[0].nf_total_fat,
-                satFat: macros[0].nf_saturated_fat,
-                carbs: macros[0].nf_total_carbohydrate,
-                sugar: macros[0].nf_sugars,
-                sodium: macros[0].nf_sodium,
+                calories: macros[0].calories,
+                protein: macros[0].protein,
+                fat: macros[0].fat,
+                satFat: macros[0].satFat,
+                carbs: macros[0].carbs,
+                sugar: macros[0].sugar,
+                sodium: macros[0].sodium,
             }
         };
 
@@ -133,7 +133,7 @@ const addFavorite = () => {
                     <FormLabel id="catergory-radio">Category</FormLabel>
                     <RadioGroup
                         row
-                        defaultValue={'other'}
+                        defaultValue={'Other'}
                         defaultChecked={true}
                         // aria-labelledby="categoryRadios"
                         name="category"
@@ -151,13 +151,6 @@ const addFavorite = () => {
                 <Box>
                     <TextField fullWidth onChange={handleChange} name={"comments"} value={comments} multiline rows={5} label="Comments" variant="outlined" />
                 </Box>
-
-                {/*Just making sure that the Macros state is being passed to be able to add it to the DB from this component*/}
-                {/*<Box sx={{ flex: 1}}>*/}
-                {/*    <h2>Macros</h2>*/}
-                {/*    <MacroTable Macros={macros[0]} size={size} />*/}
-                {/*</Box>*/}
-                {/*<button >Save Macros</button>*/}
 
                 {/*MUI Rating Element*/}
                 <Box sx={{ width: 650, display: 'flex', alignItems: 'center' }}>

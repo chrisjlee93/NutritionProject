@@ -8,8 +8,8 @@ import Info from "./components/Info.jsx"
 import AddFavorite from "./components/AddFavorite.jsx";
 import Favorites from "./components/Favorites.jsx";
 import FavoritesInfo from "./components/FavoritesInfo.jsx";
-import EditForm from "./components/EditForm.jsx";
 import Log from "./components/Log.jsx";
+import AddRecipe from "./components/AddRecipe.jsx";
 
 const App = () => {
 
@@ -30,6 +30,7 @@ const App = () => {
                         <Route path={"/favorites/:id"} element={<FavoritesInfo/>}/>
                         <Route path={"/logs/"} element={<Log/>}/>
                         <Route path={"/logs/:id"} element={<Log/>}/>
+                        <Route path={"/recipe/"} element={<AddRecipe/>}/>
 
                     </Routes>
                 </div>

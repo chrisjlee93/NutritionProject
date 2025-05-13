@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {createLog, fetchLogs, fetchLogsByDate, fetchMacrosFromIngredients, fetchWater, patchWater} from "./service.js";
 import LogList from "./LogList.jsx";
 import Box from "@mui/material/Box";
@@ -56,20 +56,29 @@ const Log = () => {
         fetchLogsByDate().then(setLogs)
     }, [refresh]);
 
+
+    const firstLoad = useRef(true);
+
     useEffect(() => {
-        const today = dayjs().format('YYYY-MM-DD');
-        if (logs && logs[today]) {
-            setLogDay(today);
+        if (firstLoad.current) {
+            const today = dayjs().format('YYYY-MM-DD');
+            if (logs && logs[today]) {
+                setLogDay(today);
+            }
+            firstLoad.current = false;
         }
-        if (logDay) {
-            fetchWater(logDay)
-                .then(setWater)
-                .catch(err => {
-                    console.error("Failed to fetch water:", err);
-                    setWater(null);
-                })}
-        // fetchWater(logDay).then(setWater)
     }, [logs]);
+
+    useEffect(() => {
+        if (!logDay) return;
+        fetchWater(logDay)
+            .then(setWater)
+            .catch(err => {
+                console.error("Failed to fetch water:", err);
+                setWater(null);
+            });
+    }, [logDay,]);
+
 
     const location = useLocation();
     const redirectedWithData = !!(location.state);
@@ -127,14 +136,25 @@ const Log = () => {
         setForm(initialForm)
     }
 
+    // All logic for water intake per day
+    const fetchWaterForDay = async (day) => {
+        try {
+            const result = await fetchWater(day);
+            setWater(result);
+        } catch (err) {
+            console.error("Failed to fetch water:", err);
+            setWater(null);
+        }
+    };
+
     const subWater = async () => {
         await patchWater(water.id,-.25)
-        setRefresh((prev) => !prev)
+        fetchWaterForDay(logDay)
     }
 
     const addWater = async () => {
         await patchWater(water.id,.25)
-        setRefresh((prev) => !prev)
+        fetchWaterForDay(logDay)
     }
 
     const handleNutriApi = async () => {
@@ -314,7 +334,7 @@ const Log = () => {
                 <ol>
                     {Object.keys(logs).sort((a, b) => new Date(b) - new Date(a)).map(date => (
 
-                        <p key={date} onClick={() => {showLog(date); setRefresh((prev) => !prev)}}
+                        <p key={date} onClick={() => {showLog(date)}}
                             style={{ cursor: 'pointer',
                             fontWeight: logDay === date ? 'bold' : 'normal',
                             textDecoration: logDay === date ? 'underline' : 'none'}}
