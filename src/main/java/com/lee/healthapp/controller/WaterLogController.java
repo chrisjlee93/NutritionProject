@@ -3,7 +3,9 @@ package com.lee.healthapp.controller;
 import com.lee.healthapp.entity.WaterLog;
 import com.lee.healthapp.service.WaterLogService;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -16,20 +18,20 @@ public class WaterLogController {
         this.waterService = waterService;
     }
 
-    @GetMapping("/today")
-    public WaterLog getTodayLog() {
-        return waterService.getOrCreateTodayLog();
+
+    @GetMapping("/{date}")
+    public WaterLog getLog(
+            @PathVariable
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+        return waterService.getOrCreateLog(date);
     }
 
-    @PostMapping("/{id}/increment")
-    public WaterLog increment(@PathVariable Long id, @RequestParam double amount) {
+
+    @PatchMapping("/{id}")
+    public WaterLog adjustWaterAmount(@PathVariable Long id, @RequestParam double amount) {
         return waterService.updateWater(id, amount);
     }
 
-    @PostMapping("/{id}/decrement")
-    public WaterLog decrement(@PathVariable Long id, @RequestParam double amount) {
-        return waterService.updateWater(id, -amount);
-    }
 
     @GetMapping
     public List<WaterLog> getAllLogs() {

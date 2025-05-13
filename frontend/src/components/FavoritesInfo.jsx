@@ -9,21 +9,26 @@ import * as React from "react";
 const FavoritesInfo = () => {
     const { id } = useParams();
     const [meal, setMeal] = useState(null)
-    const [size, setSize] = useState(1) // serving size for macros
+    const [size, setSize] = useState(1)
 
     const navigate = useNavigate();
 
-    const goToEdit = () => {
-        navigate(`/edit/${id}`, {state: {meal: meal}})
+    // navigate to log component and prefills macros and name
+    const goToLogFav = () => {
+    if (!meal) return;
+    const { name, macros } = meal;
+    navigate('/logs', { state: { name, ...macros } });
     }
 
     useEffect(() => {
-        if (!id) return; // optional safety check
+        if (!id) return;
         fetchMealById(id)
             .then(setMeal)
             .catch(err => console.error("Failed to fetch meal:", err));
     }, [id]);
 
+
+    // Fallback until meal is loaded
     if (!meal) return <p>Loading...</p>;
 
     const parseIngredient = (str) => {
@@ -107,6 +112,7 @@ const FavoritesInfo = () => {
                     <MacroTable Macros={meal.macros} size={size} />
                 </Box>
             </Box>
+            <button onClick={goToLogFav} disabled={!meal}> Log Favorite </button>
             {meal.video && embedUrl && (
                     <Box sx={{ position: 'relative', paddingTop: '56.25%', marginTop: 2, width: "80%", display: "flex", justifyContent: "center"}}>
                         <iframe

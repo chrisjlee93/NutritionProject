@@ -13,7 +13,7 @@ import {useNavigate} from "react-router-dom";
 
 const FavoritesCard = ({meal, onDelete}) => {
 
-    const {id, name, category, video, imageUrl, rating, comments, ingredients} = meal
+    const {id, name, category, video, imageUrl, rating, comments, ingredients, macros} = meal
 
 
     // This is what is used to open a unique page for each meal based on the MealDB ID
@@ -21,6 +21,10 @@ const FavoritesCard = ({meal, onDelete}) => {
 
     const goToFavInfo = () => {
         navigate(`/favorites/${id}`)
+    }
+
+    const goToLogFav = () => {
+        navigate('/logs', {state: {name, ...macros}})
     }
 
     const handleDelete = async () => {
@@ -66,6 +70,7 @@ const FavoritesCard = ({meal, onDelete}) => {
                             <p><strong>Comments:</strong> {comments} </p>
                         </div>
                     <button onClick={handleDelete}> Delete </button>
+                    <button onClick={goToLogFav}> Log </button>
                     {/*<button onClick={goToEdit}> Edit </button>*/}
                 </CardContent>
         </Card>

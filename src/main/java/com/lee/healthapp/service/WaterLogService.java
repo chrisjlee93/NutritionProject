@@ -16,11 +16,11 @@ public class WaterLogService {
         this.waterRepo = waterRepo;
     }
 
-    public WaterLog getOrCreateTodayLog() {
-        LocalDate today = LocalDate.now();
-        return waterRepo.findByDate(today)
-                .orElseGet(() -> waterRepo.save(new WaterLog(0.0, today)));
+    public WaterLog getOrCreateLog(LocalDate date) {
+        return waterRepo.findByDate(date)
+                .orElseGet(() -> waterRepo.save(new WaterLog(0.0, date)));
     }
+
 
     public WaterLog updateWater(Long id, double amountDelta) {
         WaterLog log = waterRepo.findById(id).orElseThrow();
