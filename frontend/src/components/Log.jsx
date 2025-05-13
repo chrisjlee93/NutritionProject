@@ -305,7 +305,6 @@ const Log = () => {
                         onChange={goalChange}
                     />
                     <button onClick={() => {setGoal(initialGoals)}}>Reset</button>
-                    <button onClick={addGoal}>Submit</button>
                     <button onClick={goalVisibility}>Hide</button>
                 </Box>
             }
@@ -324,13 +323,16 @@ const Log = () => {
                         </p>
                     ))}
                 </ol>
+
+
                 <Box>
                     <h2>Log for {dayjs(logDay).format('MMM D, YYYY')}</h2>
                     <p>💧 Water: {water?.waterAmount ?? 0} L (Recommended 2.7L for females and 3.7L for males)</p>
                     <p>One cup is approximately .25L of water, one bottle is approximately .5L</p>
                     <button onClick={subWater}>➖</button><button onClick={addWater}>➕</button>
-                    <LogList data={logs[logDay] || []} onTotalChange={setTotalMacros} />
+                    <LogList data={logs[logDay] || []} onTotalChange={setTotalMacros} onDelete={() => setRefresh((prev) => !prev)} />
                 </Box>
+
 
                 {/*All the graphs for logged data and goals*/}
                 <Box>

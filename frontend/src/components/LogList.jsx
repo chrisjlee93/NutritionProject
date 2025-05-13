@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import {deleteLog} from "./service.js";
 
-const LogList = ({ data, onTotalChange }) => {
+const LogList = ({ data, onTotalChange, onDelete }) => {
     const [total, setTotal] = useState({
         calories: 0, protein: 0, carbs: 0,
         fat: 0, satFat: 0, sugar: 0, sodium: 0
@@ -34,6 +34,7 @@ const LogList = ({ data, onTotalChange }) => {
 
     const handleDelete = (id) => {
         deleteLog(id);
+        onDelete?.()
         // let parent handle the refresh by lifting state up
     };
 
