@@ -96,7 +96,7 @@ const Landing = () => {
                 <h3>To get started enter or update your nutrition goals below or look up a meal from MealDB</h3>
 
 
-                <Box>
+                <Box sx={{mt: '3em'}}>
                     <TextField
                         name="gCalories"
                         type={"number"}

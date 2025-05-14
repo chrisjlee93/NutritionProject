@@ -234,7 +234,7 @@ const Log = () => {
 
     return (
         <>
-            <h1>Log</h1>
+            <h1>Meal and Nutrition Log</h1>
             {/*Visibility for form based on macros*/}
             <button onClick={formVisibility}>Add New Log</button>
             {(formV || redirectedWithData) && (
@@ -385,9 +385,11 @@ const Log = () => {
                         value={gWater}
                         onChange={goalChange}
                     />
+                    <Box>
                     <button onClick={handleSaveGoal}>Save Goal</button>
                     <button onClick={() => {setGoal(initialGoals)}}>Reset</button>
                     <button onClick={goalVisibility}>Hide</button>
+                    </Box>
                 </Box>
             }
 
