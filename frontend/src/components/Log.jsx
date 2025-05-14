@@ -10,6 +10,9 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import {BarChart} from "@mui/x-charts/BarChart";
 import { useParams, useLocation } from "react-router-dom";
+import { getGoal, createGoal } from "./service.js"; // already using getGoal
+
+
 
 const Log = () => {
 
@@ -96,6 +99,64 @@ const Log = () => {
             }));
         }
     }, [location.state]);
+
+
+    // All the necessary elements for goal
+    const [goalId, setGoalId] = useState(null);
+    const [goalData, setGoalData] = useState(null);
+
+    useEffect(() => {
+        const loadGoal = async () => {
+            try {
+                const goals = await getGoal();
+                if (goals.length > 0) {
+                    const g = goals[0];
+                    setGoalId(g.id);
+                    setGoal({
+                        gCalories: g.calorieGoal || '',
+                        gProtein: g.proteinGoal || '',
+                        gCarbs: g.carbGoal || '',
+                        gFat: g.fatGoal || '',
+                        gSatFat: g.satFatGoal || '',
+                        gSugar: g.sugarGoal || '',
+                        gSodium: g.sodiumGoal || '',
+                        gWater: g.waterGoal || ''
+                    });
+                    setGoalData(g);
+                }
+            } catch (err) {
+                console.error("Failed to fetch goals:", err);
+            }
+        };
+        loadGoal();
+    }, []);
+
+    const handleSaveGoal = async () => {
+        const payload = {
+            id: goalId,
+            calorieGoal: parseFloat(gCalories),
+            proteinGoal: parseFloat(gProtein),
+            carbGoal: parseFloat(gCarbs),
+            fatGoal: parseFloat(gFat),
+            satFatGoal: parseFloat(gSatFat),
+            sugarGoal: parseFloat(gSugar),
+            sodiumGoal: parseFloat(gSodium),
+            waterGoal: parseFloat(gWater)
+        };
+
+        try {
+            const saved = await createGoal(payload);
+            setGoalId(saved.id);
+            setGoalData(saved);
+        } catch (err) {
+            console.error("Error saving goal:", err);
+            alert("Failed to save goal.");
+        }
+
+        setGoal(initialGoals)
+    };
+
+
 
     const goalVisibility = () => {
         setGoalV(prevState => !prevState)
@@ -324,6 +385,7 @@ const Log = () => {
                         value={gWater}
                         onChange={goalChange}
                     />
+                    <button onClick={handleSaveGoal}>Save Goal</button>
                     <button onClick={() => {setGoal(initialGoals)}}>Reset</button>
                     <button onClick={goalVisibility}>Hide</button>
                 </Box>
@@ -359,7 +421,7 @@ const Log = () => {
                     <BarChart
                         xAxis={[{ data: ['Water'] }]}
                         series={[
-                            { data: [Number(goal.gWater) || 0], label: 'Goal' },
+                            { data: [goalData?.waterGoal || 0], label: 'Goal' },
                             { data: [water?.waterAmount || 0], label: 'Actual' },
                         ]}
                         height={300}
@@ -370,7 +432,7 @@ const Log = () => {
                             <BarChart
                                 xAxis={[{ data: ['Calories'] }]}
                                 series={[
-                                    { data: [Number(goal.gCalories) || 0], label: 'Goal' },
+                                    { data: [goalData?.calorieGoal || 0], label: 'Goal' },
                                     { data: [totalMacros?.calories || 0], label: 'Actual' },
                                 ]}
                                 height={300}
@@ -381,13 +443,13 @@ const Log = () => {
                                 series={[
                                     {
                                         data: [
-                                            Number(goal.gProtein) || 0,
-                                            Number(goal.gCarbs) || 0,
-                                            Number(goal.gFat) || 0,
-                                            Number(goal.gSugar) || 0,
-                                            Number(goal.gSodium) || 0,
+                                            goalData?.proteinGoal || 0,
+                                            goalData?.carbGoal || 0,
+                                            goalData?.fatGoal || 0,
+                                            goalData?.sugarGoal || 0,
+                                            goalData?.sodiumGoal || 0,
                                         ],
-                                        label: 'Goal',
+                                        label: 'Goal'
                                     },
                                     {
                                         data: [

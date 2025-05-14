@@ -5,6 +5,8 @@ import {FormControl, InputLabel, MenuItem, Select} from "@mui/material";
 import MacroTable from "./MacroTable.jsx";
 import {fetchMealById} from "./service.js";
 import * as React from "react";
+import foodImage from "../assets/MissingFoodImage.png"
+
 
 const FavoritesInfo = () => {
     const { id } = useParams();
@@ -55,13 +57,14 @@ const FavoritesInfo = () => {
             </Box>
             <Box sx={{ display: "flex", justifyContent: "center" }}>
                 <img
-                    src={meal.imageUrl}
+                    src={meal.imageUrl || foodImage}
                     alt={meal.name}
                     style={{ width: "70%", borderRadius: "8px" }}
                 />
             </Box>
             <p><strong>Category:</strong> {meal.category}</p>
-            <p><strong>Instructions:</strong> {meal.recipe}</p>
+            <h3>Instructions:</h3>
+            <p> {meal.recipe}</p>
 
             <Box sx={{ display: "flex", flexWrap: "wrap", mb: "5em" }}>
                 <FormControl fullWidth>

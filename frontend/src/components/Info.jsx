@@ -49,28 +49,6 @@ const Info = () => {
             .join(', ');
 
 
-    // const fetchMacros = async (ingredient) => {
-    //     try {
-    //         const response = await axios.post(
-    //             "https://trackapi.nutritionix.com/v2/natural/nutrients",
-    //             { query: ingredient },
-    //             {
-    //                 headers: {
-    //                     "x-app-id": appId,
-    //                     "x-app-key": appKey,
-    //                     "Content-Type": "application/json",
-    //                 },
-    //             }
-    //         );
-    //         const foods = response.data.foods;
-    //         setMacros(foods);
-    //         setTableVisibility(!!foods?.length);
-    //     } catch (error) {
-    //         console.error("Error fetching nutrition:", error);
-    //         setTableVisibility(false);
-    //     }
-    // };
-
     useEffect(() => {
         const fetchMealInfo = async () => {
             try {

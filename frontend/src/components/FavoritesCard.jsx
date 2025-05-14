@@ -4,7 +4,6 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import CardActionArea from '@mui/material/CardActionArea';
 import * as React from "react";
-import Box from "@mui/material/Box";
 import foodImage from "../assets/MissingFoodImage.png"
 import {Rating} from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
@@ -39,7 +38,7 @@ const FavoritesCard = ({meal, onDelete}) => {
                 <CardMedia
                     component="img"
                     height={300}
-                    image={imageUrl}
+                    image={imageUrl || foodImage}
                     alt={name}
                     onClick={goToFavInfo}
                     onError={(e) => {

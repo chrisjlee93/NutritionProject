@@ -74,3 +74,24 @@ html, body, #root {
   padding: 0;
 }
 
+body {
+  margin: 0;
+  padding: 0;
+  position: relative;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url('./assets/background.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+  opacity: 0.1; /* <-- THIS controls how visible the background is */
+  z-index: -1;
+  pointer-events: none; /* ensures it's invisible to mouse events */
+}
