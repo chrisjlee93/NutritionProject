@@ -72,6 +72,21 @@ const Landing = () => {
 
     };
 
+    const handleDeleteGoal = async () => {
+        if (goalId) {
+            try {
+                await deleteGoal(goalId);
+                setGoal(initialGoals);
+                setGoalId(null);
+                setGoalData(null); // ✅ Hide summary and reset graph source
+            } catch (err) {
+                console.error("Failed to delete goal:", err);
+                alert("Error deleting goal.");
+            }
+        }
+    };
+
+
 
     return (
         <>
@@ -165,16 +180,7 @@ const Landing = () => {
                     </>
                 )}
 
-
-
-                <button onClick={() => {
-                    if (goalId) {
-                        deleteGoal(goalId).then(() => {
-                            setGoal(initialGoals);
-                            setGoalId(null);
-                        });
-                    }
-                }}>Delete</button>
+                <button onClick={handleDeleteGoal}>Delete</button>
 
 
             </Box>
